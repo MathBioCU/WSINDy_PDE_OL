@@ -21,7 +21,7 @@ for tOL=2:T+1
     tic;
     
     U = cellfun(@(x)x(space_inds{:},tOL+Kmem-1),U_obs,'uni',0); % get new snapshots
-    U_obs_gap=cellfun(@(x)cat(dim,x(space_inds{:},2:end),U{1}),U_obs_gap,'uni',0); % add to memory
+    U_obs_gap=cellfun(@(x)cat(dim,x(space_inds{:},2:Kmem),U{1}),U_obs_gap,'uni',0); % add to memory
     xs_OL{end}={xs_obs{end}(tOL:tOL+Kmem-1)}; % update time grid
     
     Theta_cell=cellfun(@(x)x(space_inds{:},2:Kmem),Theta_cell,'uni',0); % remove oldest snapshot

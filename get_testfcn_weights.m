@@ -9,8 +9,8 @@ function [Cfs_x,Cfs_t,p_x,p_t,sub_inds] = get_testfcn_weights(dims,max_dx,max_dt
     end
 
     sub_inds = cell(1,dim);
-    ss = [repmat(s_x,1,dim-1) s_t];
     mm = [repmat(m_x,1,dim-1) m_t];
+    ss = [repmat(s_x,1,dim-1) s_t];
     for j=1:dim
         N = dims(j);
         m = mm(j);
@@ -21,8 +21,12 @@ function [Cfs_x,Cfs_t,p_x,p_t,sub_inds] = get_testfcn_weights(dims,max_dx,max_dt
     if length(phi_class)==1
         phi_class = repmat(phi_class,1,2);
     end
-
-    [Cfs_x,p_x] = phi_int_weights(m_x,max_dx,tols(1),phi_class{1});
+    
+    if dim>1
+        [Cfs_x,p_x] = phi_int_weights(m_x,max_dx,tols(1),phi_class{1});
+    else
+        Cfs_x = 1; p_x = 0;
+    end
     [Cfs_t,p_t] = phi_int_weights(m_t,max_dt,tols(2),phi_class{2});
 
 end

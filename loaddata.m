@@ -1,12 +1,21 @@
 %%%%%%%%%%%% load observation data from file
 
-pde_name = pde_names{pde_num};
-load([data_dr,pde_name],'U_exact','xs','lhs','true_nz_weights');
+if pde_num>0
+    pde_name = pde_names{pde_num};
+    load([data_dr,pde_name],'U_exact','xs','lhs','true_nz_weights');
+else
+    try 
+        U_obs = U_exact;
+        xs_obs = xs;
+        pde_name='';
+    catch
+        disp(['no data found'])
+    end
+end
+
 if ~exist('true_nz_weights','var')
     true_nz_weights=[];
 end
-U_obs = U_exact;
-xs_obs = xs;
 
 %%%%%%%%%%%% coarsen data: rewrites coarsened versions to U_obs, xs_obs
 

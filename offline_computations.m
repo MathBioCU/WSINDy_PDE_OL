@@ -2,7 +2,7 @@
 
 tic,
 n = length(U_obs);
-dims = size(U_obs{1});
+dims = cellfun(@(x) length(x), xs_obs);
 dim = length(dims);
 num_eq = size(lhs,1);
 
@@ -23,7 +23,10 @@ xs_OL=[xs_obs(1:end-1),{xs_obs{end}(1:Kmem)}];
 space_inds=repmat({':'},1, dim-1);
 U_obs_gap=cellfun(@(x)x(space_inds{:},1:Kmem),U_obs,'uni',0);
 
-mx_max=floor(min((cellfun(@(x)length(x),xs_obs(1:end-1))-1)/2)./1.5);
+mx_max = 0;
+for i=1:dim-1
+    mx_max=floor(min(mx_max,(length(xs_obs{i})-1)/2)./1.5);
+end
 mt_max=floor((Kmem-1)/2/1);
 if use_cornerpt>0
     tauhat_ind = unique(min(use_cornerpt,length(U_obs)));
@@ -54,7 +57,7 @@ Cfs_t_scaled=(m_t*dt*scales(n+dim)).^(-(0:size(Cfs_t,1)-1)').*Cfs_t;
 
 %%%%%%%% get cell array of weak-formed library over first Kmem snapshots
 
-Theta_cell = repmat({zeros([cellfun(@(x)length(x),sub_inds(1:end-1)) Kmem])},size(lib_list,1),1);
+Theta_cell = repmat({zeros([cellfun(@(x)length(x),sub_inds(1:dim-1)) Kmem])},size(lib_list,1),1);
 n = length(U_obs_gap);
 libtree = liblisttree(lib_list,n);
 for tt=1:Kmem

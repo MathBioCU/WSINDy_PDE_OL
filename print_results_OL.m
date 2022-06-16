@@ -29,7 +29,7 @@ if ~isequal(print_loc,0)
 
     for k=1:num_eq
         fprintf(print_loc,['\nRecovered PDE: ',str_wsindy{k}]);
-        fprintf(print_loc,'\nRelative Res: ||b-G*W||_2/||b||_2 = %.2e',norm(resid(:,k)/norm(b)));
+        fprintf(print_loc,'\nRelative Res: ||b-G*W||_2/||b||_2 = %.2e\n',norm(resid(:,k)/norm(b)));
         if ~isempty(dW)
             fprintf(print_loc,'\nMax Weight Error: max|W-W_{true}| = %.2e\n', dW(k));
         end

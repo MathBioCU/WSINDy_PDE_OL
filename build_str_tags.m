@@ -3,7 +3,9 @@ function [tags_pde,lib_list] = build_str_tags(lib_list,dim,n)
     ind = 1;
     for j=1:size(lib_list)
         tags = lib_list(j,:);
-        if dim == 2
+        if dim == 1
+            str_pdx = repelem('t',tags(end));
+        elseif dim == 2
             str_pdx = [repelem('x',tags(end-1)),repelem('t',tags(end))];
         elseif dim == 3
             str_pdx = [repelem('x',tags(end-2)),repelem('y',tags(end-1)),repelem('t',tags(end))];

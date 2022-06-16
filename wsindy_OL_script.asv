@@ -14,8 +14,8 @@ offline_computations;
 
 %% online iterations
 
+clc;
 for tOL=2:T+1
-    clc;
 
     %%%%%%%%%%%%%% build new linear system using new snapshot U
     tic;
@@ -40,8 +40,8 @@ for tOL=2:T+1
     astep = get_astep(G,M,sparsity,aa_fac,astep0);
 
     Z = W - astep*(M.^2.*(G'*(G*W-b)) -gamma^2*W);
-    W = get_proj_op(H(Z,lambda,LB,astep),upper_bound);
-
+    W = H(Z,lambda,LB,astep);
+    
     %%%%%%%%%%%%%% update lambda
     
     sparsity_old = sparsity;

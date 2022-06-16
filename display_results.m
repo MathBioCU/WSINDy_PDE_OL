@@ -26,9 +26,15 @@ for jj=1:min(toggle_plot_sol,n)
         xlim([xs_OL{1}(1) xs_OL{1}(end)])
         ylim([xs_OL{2}(1) xs_OL{2}(end)])
         colorbar
-    else
+    elseif and(dim==2,length(xs_obs{1})>1)
         plot(xs_OL{1},U_obs_gap{jj}(foo{1:dim})')
         xlim([xs_OL{1}(1) xs_OL{1}(end)])
+    else
+        if n==2
+            plot(U_obs_gap{1},U_obs_gap{2},'.')
+            xlim([min(U_obs{1}) max(U_obs{1})])
+            ylim([min(U_obs{2}) max(U_obs{2})])
+        end
     end
     set(gca, 'TickLabelInterpreter','latex','fontsize',14)
     xlabel('$x$','interpreter','latex','fontsize',14)

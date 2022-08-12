@@ -14,8 +14,8 @@ end
 %% plot data
 
 for jj=1:min(toggle_plot_sol,n)
-    figind = figind +1;
-    figure(figind); 
+    % figind = figind +1;
+    % figure(figind); 
     colormap(turbo(50))
     foo=[repmat({':'},1,dim-1),{Kmem}];
     U_obs_gap=cellfun(@(x)x(foo{1:dim-1},1+tOL:Kmem+tOL),U_obs,'uni',0);
@@ -34,6 +34,11 @@ for jj=1:min(toggle_plot_sol,n)
             plot(U_obs_gap{1},U_obs_gap{2},'.')
             xlim([min(U_obs{1}) max(U_obs{1})])
             ylim([min(U_obs{2}) max(U_obs{2})])
+        elseif n==3
+            plot3(U_obs_gap{1},U_obs_gap{2},U_obs_gap{3},'.')
+            xlim([min(U_obs{1}) max(U_obs{1})])
+            ylim([min(U_obs{2}) max(U_obs{2})])
+            zlim([min(U_obs{3}) max(U_obs{3})])
         end
     end
     set(gca, 'TickLabelInterpreter','latex','fontsize',14)

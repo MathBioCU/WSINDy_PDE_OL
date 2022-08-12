@@ -3,6 +3,8 @@
 if pde_num>0
     pde_name = pde_names{pde_num};
     load([data_dr,pde_name],'U_exact','xs','lhs','true_nz_weights');
+elseif ode_num>0
+    ode_data_gen;
 else
     try 
         U_obs = U_exact;

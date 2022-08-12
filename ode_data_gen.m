@@ -1,4 +1,3 @@
-ode_num=3;
 ode_params=[];
 tspan=0:0.01:1000;
 x0=[];
@@ -6,9 +5,15 @@ tol_ode=10^-13;
 
 [weights,x,t,ode_name,ode_params,rhs] = gen_data(ode_num,ode_params,tspan,x0,tol_ode);
 
-U_exact = mat2cell(x',ones(size(x,2),1),size(x,1));
-xs = {0,t};
-lhs = [eye(length(U_exact)) zeros(length(U_exact),1) ones(length(U_exact),1)];
+U_obs = mat2cell(x',ones(size(x,2),1),size(x,1));
+xs_obs = {0,t};
+lhs = [eye(length(U_obs)) zeros(length(U_obs),1) ones(length(U_obs),1)];
+pde_name = '';
+
+true_nz_weights = weights;
+for i=1:length(weights)
+	true_nz_weights{i} = [true_nz_weights{i}(:,1:length(weights)) zeros(size(true_nz_weights{i},1),2) true_nz_weights{i}(:,end)];
+end
 
 function [weights,x,t,ode_name,ode_params,rhs] = gen_data(ode_num,ode_params,tspan,x0,tol_ode)
 

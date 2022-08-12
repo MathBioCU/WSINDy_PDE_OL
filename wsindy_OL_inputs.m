@@ -34,13 +34,14 @@ pde_names = {'burgers.mat',...          %1
     'wave2DVCspeedu3_c0.95-19-May-2022.mat', ...    %28
     };
 pde_num = 0;
+ode_num = 7;
 
 %%%%%%%%%%%%%%% coarsen data
 %%% ------------------------
 %%% each row k is a triple [L s R] corresponding to subsampling in
 %%% coordinate k: xs{k} <- xs{k}(L:s:R)
 
-coarse_data_pattern = [[0 1 1];[0 2 1];[0 2 1]]; 
+coarse_data_pattern = [[0 1 1];[0 4 1];[0 2 1]]; 
 
 %%%%%%%%%%%%%%% add noise to data
 %%% -----------------------------
@@ -49,7 +50,7 @@ coarse_data_pattern = [[0 1 1];[0 2 1];[0 2 1]];
 %%% noise_dist chooses Gaussian (0) or uniform (1) noise
 %%% noise_alg chooses additive (0) or multiplicative (1) noise
 
-sigma_NR = 0.01;
+sigma_NR = 0;
 rng('shuffle');
 noise_dist = 0;
 noise_alg = 0;
@@ -57,7 +58,7 @@ noise_alg = 0;
 %%%%%%%%%%%%%%% number of time snapshots allowed in memory
 %%% ------------------------------------------------------
 
-Kmem = 300;
+Kmem = 200;
 
 %%%%%%%%%%%%%%% number of online iterations 
 %%% ---------------------------------------
@@ -114,7 +115,7 @@ phi_class = {1,1}; % 1=piecewise polynomial, 2=Gaussian, {space,time}
 
 use_cornerpt = 1; % use cornerpoint algorithm applied to first Kmem snapshots
 tauhat_x = 2; tau_x = 10^-10;
-tauhat_t = 2; tau_t = 10^-6;
+tauhat_t = 1; tau_t = 10^-10;
 
 m_x = 0; % values chosen if use_cornerpt = 0
 p_x = 11;
@@ -131,5 +132,5 @@ toggle_OL_print=1;
 %%% -------------------------------------------------
 
 toggle_plot_basis_fcn = 0;
-toggle_plot_sol =  0;
+toggle_plot_sol = 1;
 toggle_plot_fft = 0;

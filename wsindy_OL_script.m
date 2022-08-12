@@ -40,7 +40,8 @@ for tOL=2:T+1
     astep = get_astep(G,M,sparsity,aa_fac,astep0);
 
     Z = W - astep*(M.^2.*(G'*(G*W-b)) -gamma^2*W);
-    W = get_proj_op(H(Z,lambda,LB,astep),upper_bound);
+W = H(Z,lambda,LB,astep);
+W = get_proj_op(W,upper_bound);
 
     %%%%%%%%%%%%%% update lambda
     

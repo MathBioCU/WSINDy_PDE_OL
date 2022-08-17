@@ -32,16 +32,18 @@ pde_names = {'burgers.mat',...          %1
     'wave2DVCspeedu3_c0.9.mat',...      %26
     'wave2DVCspeedu3_c0.95.mat',...     %27
     'wave2DVCspeedu3_c0.95-19-May-2022.mat', ...    %28
+    'wave2DVCspeedu3_c0.5-14-Aug-2022.mat', ... %29
     };
-pde_num = 0;
-ode_num = 7;
+
+pde_num = 26;
+ode_num = 0;
 
 %%%%%%%%%%%%%%% coarsen data
 %%% ------------------------
 %%% each row k is a triple [L s R] corresponding to subsampling in
 %%% coordinate k: xs{k} <- xs{k}(L:s:R)
 
-coarse_data_pattern = [[0 1 1];[0 4 1];[0 2 1]]; 
+coarse_data_pattern = [[0 2 1];[0 2 1];[0 2 1]]; 
 
 %%%%%%%%%%%%%%% add noise to data
 %%% -----------------------------
@@ -50,7 +52,7 @@ coarse_data_pattern = [[0 1 1];[0 4 1];[0 2 1]];
 %%% noise_dist chooses Gaussian (0) or uniform (1) noise
 %%% noise_alg chooses additive (0) or multiplicative (1) noise
 
-sigma_NR = 0;
+sigma_NR = 0.1;
 rng('shuffle');
 noise_dist = 0;
 noise_alg = 0;
@@ -58,7 +60,7 @@ noise_alg = 0;
 %%%%%%%%%%%%%%% number of time snapshots allowed in memory
 %%% ------------------------------------------------------
 
-Kmem = 200;
+Kmem = 15;
 
 %%%%%%%%%%%%%%% number of online iterations 
 %%% ---------------------------------------
@@ -90,7 +92,7 @@ astep0 = 0;
 %%% 'IVHT', 'IHTs', 'LASSO' (see get_sparse_update.m for details)
 
 SRmeth = 'IVHT';
-lambda_init = 0.001;
+lambda_init = 0.0001;
 lambda_step = 0.1;
 lambda_max = 0.1;
 upper_bound = 10^2;
@@ -98,8 +100,8 @@ upper_bound = 10^2;
 %%%%%%%%%%%%%%% PDE library
 %%% -----------------------
 
-max_dx = 0; % use spatial derivatives up to this order
-max_dt = 1; % use temporal derivatives up to this order
+max_dx = 4; % use spatial derivatives up to this order
+max_dt = 2; % use temporal derivatives up to this order
 polys = [0:4]; % use polynomials of state variables 
 trigs = [];  % use trig functions of state variables
 use_all_dt =  0; % use all temporal derivatives 
@@ -113,24 +115,29 @@ custom_remove = {}; % remove terms using conditions {@(mat) mat(1,:)==0} will re
 max_rows = 5000; % maximum allowed rows in matrix, sets Query points, s_x
 phi_class = {1,1}; % 1=piecewise polynomial, 2=Gaussian, {space,time}
 
-use_cornerpt = 1; % use cornerpoint algorithm applied to first Kmem snapshots
+use_cornerpt = 0; % use cornerpoint algorithm applied to first Kmem snapshots
 tauhat_x = 2; tau_x = 10^-10;
 tauhat_t = 1; tau_t = 10^-10;
 
-m_x = 0; % values chosen if use_cornerpt = 0
-p_x = 11;
-m_t = 25;floor((Kmem-1)/2);
+m_x = 10; % values chosen if use_cornerpt = 0
+p_x = 9;
+m_t = floor((Kmem-1)/2);
 p_t = 9;
 
 %%%%%%%%%%%%%%% Display results during online iterations
 %%% ----------------------------------------------------
 
 print_loc = 1;
-toggle_OL_print=1;
+toggle_OL_print=10;
 
 %%%%%%%%%%%%%%% Plot results during online iterations
 %%% -------------------------------------------------
 
 toggle_plot_basis_fcn = 0;
-toggle_plot_sol = 1;
+toggle_plot_sol = 0;
+toggle_plot_weights = 200;
 toggle_plot_fft = 0;
+
+%%%%%%%%%%%%%%% Save results during online iterations
+%%% -------------------------------------------------
+toggle_save = 1;

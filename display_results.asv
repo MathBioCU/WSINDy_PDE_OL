@@ -13,7 +13,7 @@ end
 
 %% plot coefficients
 
-if and(toggle_plot_weights,mod(tOL,toggle_plot_weights)==0)
+if toggle_plot_weights
 %     figind = figind+1;
 %     figure(figind);
     if isequal(class(axi),'double')
@@ -30,15 +30,19 @@ if and(toggle_plot_weights,mod(tOL,toggle_plot_weights)==0)
         legs_FP = categorical(tags_pde_G(and(axi{(Kmem+1)/2+tOL-1}==0,W~=0)));
     end
     numterms = size(true_weights,1);
-    numplots = numterms + 1;%~isempty(legs_FP);
+    numplots = numterms + ~isempty(legs_FP);
     for j=1:numterms
         subplot(numplots,1,j)
         plot(1:tOL,true_weights(j,:), 'r.-', 1:tOL,learned_weights(j,:), 'b.--')
         xlim([1 min(2*tOL,length(xs_obs{end}))])
         legend({[legs{j}, ' true'],[legs{j}, ' learned']},'location','eastoutside')
     end
-    subplot(numplots,1,numplots)
-    bar(legs_FP,learned_weights_FP)
+    if ~isempty(legs_FP)
+        subplot(numplots,1,numplots)
+        bar(legs_FP,learned_weights_FP', 'b.--')
+        xlim([1 min(2*tOL,length(xs_obs{end}))])
+        legend({[legs{j}, ' true'],[legs{j}, ' learned']},'location','eastoutside')
+    end
 end
 
 %% plot data

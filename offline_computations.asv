@@ -23,9 +23,11 @@ xs_OL=[xs_obs(1:end-1),{xs_obs{end}(1:Kmem)}];
 space_inds=repmat({':'},1, dim-1);
 U_obs_gap=cellfun(@(x)x(space_inds{:},1:Kmem),U_obs,'uni',0);
 
-mx_max = min(cellfun(@(x) floor((length(x)-1)/2), xs_obs(1:end-1)));
+mx_max = 0;
+for i=1:dim-1
+    mx_max=floor(min(mx_max,(length(xs_obs{i})-1)/2)./1.5);
+end
 mt_max=floor((Kmem-1)/2/1);
-
 if use_cornerpt>0
     tauhat_ind = unique(min(use_cornerpt,length(U_obs)));
     [corners,sig_est] = findcornerpts(U_obs_gap{tauhat_ind},xs_OL,0);
@@ -105,6 +107,4 @@ end
 Ws = {W_0};
 
 ET_offline = toc;
-ETs = ET_offline+ET_load_data;
-
 fprintf(1,'offline precomputation: %4.4f sec \n',ET_offline);
